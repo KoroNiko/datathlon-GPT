@@ -14,11 +14,12 @@ Ideas:
 
 Features to implement
 
-- Color extraction
-- Assign a date to each artwork (based on the artist birthdate + ~25 years)
-- Face detection (Artist portraits)
+- Color extraction (Nikos Korovesis)
+- Face detection (Artist portraits) (Nikos Kales)
+- Assign a date to each artwork (based on the artist birthdate + ~25 years) (Paulina)
+- Place to each artwork (Stratos)
+
 - Edge detection
-- Place to each artwork
 - Movement to each artwork
 - Combine some of the above with the timeline
 - Add some important events in the timeline
