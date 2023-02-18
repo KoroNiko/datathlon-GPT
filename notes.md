@@ -18,7 +18,10 @@ Features to implement
 - Assign a date to each artwork (based on the artist birthdate + ~25 years)
 - Face detection (Artist portraits)
 - Edge detection
-- Place to each artwork
-- Movement to each artwork
 - Combine some of the above with the timeline
 - Add some important events in the timeline
+
+
+Done
+- Place to each artwork
+- Movement to each artwork
