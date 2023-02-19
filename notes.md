@@ -23,3 +23,5 @@ Features to implement
 - Movement to each artwork
 - Combine some of the above with the timeline
 - Add some important events in the timeline
+
+- techniques that were used
