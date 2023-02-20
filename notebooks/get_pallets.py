@@ -84,5 +84,5 @@ with Pool(processes=2, initializer=i1) as pool:
             print('Error at iteration', len(result))
             print(e)
 
-# with open('/media/stratos/New Volume/'+'img_pallets_all.pkl', 'wb') as handle:
-#     pickle.dump(result, handle)
+with open('/media/stratos/New Volume/'+'img_pallets_last.pkl', 'wb') as handle:
+    pickle.dump(result, handle)
