@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 Base = declarative_base()
 metadata = Base.metadata
 
-class Colors(base):
+class Colors(Base):
     __tablename__ = 'Colors'
     
     id = Column(INTEGER, primary_key=True)
@@ -40,7 +40,7 @@ class Subcategory(Base):
     category = relationship('Category')
     color = relationship('Colors')
 
-class Artwork(base):
+class Artwork(Base):
     __tablename__ = 'Artwork'
     
     id = Column(INTEGER, primary_key=True)
@@ -58,7 +58,7 @@ class Artwork(base):
     colors = relationship('Colors')
     
     
-class Events(base):
+class Events(Base):
     __tablename__ = 'Events'
     
     id = Column(INTEGER, primary_key=True)
