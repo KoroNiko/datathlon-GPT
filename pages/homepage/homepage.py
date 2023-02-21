@@ -43,7 +43,7 @@ def generate_div_container(div_id, div_children, div_style):
 # * ###########################################################################################################################
 
 # * Layout ####################################################################################################################
-layout = html.Div(children=[
+homepage_layout = html.Div(children=[
     # ! ROW 1
     html.Div(id='row-1', children=[
         html.Div(id='row-1-left', children=[
@@ -125,10 +125,3 @@ layout = html.Div(children=[
     ])
 ])
 # * Layout ####################################################################################################################
-
-app.layout = layout
-
-
-# * Run the app
-if __name__ == '__main__':
-    server.run(debug=True, port=8080)
