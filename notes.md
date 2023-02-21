@@ -25,3 +25,9 @@ Features to implement
 - Add some important events in the timeline
 
 - techniques that were used
+
+
+```Python
+import ast
+ast.literal_eval(str_as_dict)
+```
