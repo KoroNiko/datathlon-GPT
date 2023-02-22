@@ -66,9 +66,16 @@ homepage_layout = html.Div(children=[
                                    div_style=div_container_style),
             
             generate_div_container(div_id='dropdown-2-container',
-                                   div_children=[dcc.Dropdown(id='subcategory-selector', options=[], placeholder='Select a subcategory')],
+                                   div_children=[dcc.Dropdown(id='subcategory-selector', options=[], placeholder='Select a subcategory',
+                                                              disabled=True)],
                                    div_style=div_container_style),
             
+            generate_div_container(div_id='dropdown-3-container',
+                                   div_children=[dcc.Dropdown(id='artwork-selector', options=[], placeholder='Select an artwork',
+                                                              disabled=True)],
+                                   div_style=div_container_style),
+            
+            # ? Date picker will not be used (probably)
             # generate_div_container(div_id='dropdown-3-container',
             #                        div_children=[dcc.DatePickerRange(id='date-picker', start_date_placeholder_text='Start date',
             #                                                          end_date_placeholder_text='End date')],

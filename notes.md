@@ -31,3 +31,9 @@ Features to implement
 import ast
 ast.literal_eval(str_as_dict)
 ```
+
+# TODO
+
+virtualenv with python 3.8 to match AWS instance env
+callbacks for dashboard
+prepare data
