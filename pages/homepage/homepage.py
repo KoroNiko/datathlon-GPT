@@ -2,6 +2,7 @@ import dash
 import dash_bootstrap_components as dbc
 from dash import html, dcc
 import plotly.graph_objects as go
+from pages.homepage.homepage_data import get_categories
 
 # ? Other liked themes
 # ZEPHYR
@@ -60,7 +61,7 @@ homepage_layout = html.Div(children=[
     html.Div(id='row-2', children=[
         html.Div(id='row-2-left', children=[
             generate_div_container(div_id='dropdown-1-container',
-                                   div_children=[dcc.Dropdown(id='category-selector', options=['Artist', 'Movement', 'Century', 'Country', 'Date Range'],
+                                   div_children=[dcc.Dropdown(id='category-selector', options=get_categories(),
                                                               placeholder='Select a category')],
                                    div_style=div_container_style),
             
@@ -68,10 +69,10 @@ homepage_layout = html.Div(children=[
                                    div_children=[dcc.Dropdown(id='subcategory-selector', options=[], placeholder='Select a subcategory')],
                                    div_style=div_container_style),
             
-            generate_div_container(div_id='dropdown-3-container',
-                                   div_children=[dcc.DatePickerRange(id='date-picker', start_date_placeholder_text='Start date',
-                                                                     end_date_placeholder_text='End date')],
-                                   div_style=div_container_style),
+            # generate_div_container(div_id='dropdown-3-container',
+            #                        div_children=[dcc.DatePickerRange(id='date-picker', start_date_placeholder_text='Start date',
+            #                                                          end_date_placeholder_text='End date')],
+            #                        div_style=div_container_style),
             
             generate_div_container(div_id='image-container',
                                    div_children=[html.Center(html.Img(id='artwork-image', height='100%', width='100%', src=img_link))],
