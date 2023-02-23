@@ -33,8 +33,6 @@ def get_categories():
         df = df.rename(columns={'name': 'label', 'id': 'value'})
         # categories = datathlonDB.execute(query).scalars().all()
         # categories = sorted(pd.read_sql_query(sql=query, con=db.engine).name.to_list())
-
-    print(df.to_dict('records'))
  
     # return ['1']
     return df.to_dict('records')
