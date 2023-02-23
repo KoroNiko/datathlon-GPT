@@ -9,7 +9,7 @@ from sqlalchemy.sql import Select
 from app import datathlonDB, db, server
 from utils import database
 from utils import functions
-
+from dash import html
 # ! datetime libs import if needed
 
 database_dir = config['DATABASE_DIR']
@@ -59,7 +59,7 @@ def generate_timeline_figure(df):
         # ! get min events
         events_start = df_events.start_date.min()
         events_end = df_events.end_date.max()
-        timeline_range = pd.date_range(start=events_start, end=events_end, freq='M')
+        timeline_range = pd.date_range(start=events_start, end=events_end, freq='Y')
     
     # invisible line to set xaxis
     fig.add_trace(go.Scatter(x=timeline_range, y=[0]*len(timeline_range), mode='lines', line=dict(width=0), marker=dict(opacity=0)))
@@ -71,14 +71,33 @@ def generate_timeline_figure(df):
         fig.add_vline(x=row.end_date, line_width=3, line_dash='dash', 
                       line_color='LightSkyBlue')
         
-        fig.add_annotation(x=row.start_date, y=2, text=row['name']+' start', showarrow=False, textangle=-90, font={'size': annotation_font_size})
-        fig.add_annotation(x=row.end_date, y=2, text=row['name']+' end', showarrow=False, textangle=-90, font={'size': annotation_font_size})
+        fig.add_annotation(x=row.start_date, y=1, text=row['name']+' start', showarrow=False, textangle=-90, font={'size': annotation_font_size})
+        fig.add_annotation(x=row.end_date, y=100, text=row['name']+' end', showarrow=False, textangle=-90, font={'size': annotation_font_size})
         
     # for i, row in df_events.iterrows():
     #     fig.add_vrect(x0=row.start_date, x1=row.end_date, fillcolor="LightSkyBlue", opacity=0.25, 
-    #                   line_width=0, hovertext=row['name'])
+    #                   line_width=1, annotation_text=row['name'], annotation_position="top left", annotation_font_size=annotation_font_size)
     
     # print(df_events)
     # print(timeline_range)
     
     return fig
+
+
+def get_color_information(rgb_colors, cluster_counts, title_str):
+    cluster_counts_dict = ast.literal_eval(cluster_counts)
+    rgb_colors_list = ast.literal_eval(rgb_colors)
+    
+    labels = functions.rgb2hex(rgb_colors_list)
+    values = list(map(lambda x: x[1], sorted(rgb_colors_list)))
+    
+    
+    dominant_color_rgb_i = list(cluster_counts_dict)[0]
+    dominant_color_hex = '#%02x%02x%02x' % tuple(rgb_colors_list[dominant_color_rgb_i])
+    dominant_color_rgb = rgb_colors_list[dominant_color_rgb_i]
+
+    color_info  =[html.B(title_str), html.Br(), 
+                  f'''Dominant color in RGB: {dominant_color_rgb}''', html.Br(), 
+                  f'''Dominant color in Hex: {dominant_color_hex}''', html.Br()]
+    
+    return color_info
