@@ -76,8 +76,6 @@ def generate_timeline_figure(df):
         fig.add_annotation(x=row.start_date, y=2, text=row['name']+' start', showarrow=False, textangle=-90, font={'size': annotation_font_size})
         fig.add_annotation(x=row.end_date, y=2, text=row['name']+' end', showarrow=False, textangle=-90, font={'size': annotation_font_size})
         
-        
-        
     # for i, row in df_events.iterrows():
     #     fig.add_vrect(x0=row.start_date, x1=row.end_date, fillcolor="LightSkyBlue", opacity=0.25, 
     #                   line_width=0, hovertext=row['name'])
