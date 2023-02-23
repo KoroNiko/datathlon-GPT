@@ -21,6 +21,7 @@ fig_layout = {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0
               'xaxis': {'showgrid': False, 'visible': False},
               'yaxis': {'showgrid': False, 'visible': False}}
 
+annotation_font_size = 16
 
 
 def get_categories():
@@ -60,17 +61,28 @@ def generate_timeline_figure(df):
         # ! get min events
         events_start = df_events.start_date.min()
         events_end = df_events.end_date.max()
-        timeline_range = pd.date_range(start=events_start, end=events_end, freq='Y')
+        timeline_range = pd.date_range(start=events_start, end=events_end, freq='M')
     
     # invisible line to set xaxis
     fig.add_trace(go.Scatter(x=timeline_range, y=[0]*len(timeline_range), mode='lines', line=dict(width=0), marker=dict(opacity=0)))
     
     for i, row in df_events.iterrows():
-        print(row.name)
-        fig.add_vrect(x0=row.start_date, x1=row.end_date, fillcolor="LightSkyBlue", opacity=0.25, 
-                      line_width=0, annotation_text=row['name'], annotation_position='top left')
+        fig.add_vline(x=row.start_date, line_width=3, line_dash='dash', 
+                      line_color='LightSkyBlue')
+        
+        fig.add_vline(x=row.end_date, line_width=3, line_dash='dash', 
+                      line_color='LightSkyBlue')
+        
+        fig.add_annotation(x=row.start_date, y=2, text=row['name']+' start', showarrow=False, textangle=-90, font={'size': annotation_font_size})
+        fig.add_annotation(x=row.end_date, y=2, text=row['name']+' end', showarrow=False, textangle=-90, font={'size': annotation_font_size})
+        
+        
+        
+    # for i, row in df_events.iterrows():
+    #     fig.add_vrect(x0=row.start_date, x1=row.end_date, fillcolor="LightSkyBlue", opacity=0.25, 
+    #                   line_width=0, hovertext=row['name'])
     
-    print(df_events)
+    # print(df_events)
     # print(timeline_range)
     
     return fig
