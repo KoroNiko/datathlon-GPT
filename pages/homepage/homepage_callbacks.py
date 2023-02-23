@@ -53,7 +53,7 @@ def on_category_selection(category):
 )
 def on_subcategory_selection(subcategory, category):
     if subcategory is None:
-        return [], True, go.Figure(data=[], layout=pie_fig_layout), go.Figure(data=[], layout=t_fig_layout  )
+        return [], True, go.Figure(data=[], layout=pie_fig_layout), go.Figure(data=[], layout=t_fig_layout)
     pass
         
     # ? Pie chart for supercluster
@@ -82,16 +82,31 @@ def on_subcategory_selection(subcategory, category):
     # ? Timeline graph
     df_subcat = pd.read_sql_query(sql=select(database.Subcategory).where(database.Subcategory.id == subcategory), con=db.engine.connect())
     fig_timeline = homepage_data.generate_timeline_figure(df_subcat)
-    
-    # ! move this to homepage data when done
-    # start_date = df_subcat.start_date.iloc[0]
-    # end_date = df_subcat.end_date.iloc[0]
-    
-    # query = select(database.Events).where(and_(database.Events.start_date >= start_date, database.Events.end_date <= end_date))
-    # df_events = pd.read_sql_query(sql=query, con=db.engine.connect())
-    
-    # print(df_events)
-    # !
-
-    
+      
     return artwork_options, False, fig_pie, fig_timeline
+
+
+@app.callback(
+    [
+        Output(component_id='picture-info-p', component_property='children'),
+        Output(component_id='color-pie-chart', component_property='figure'),
+        Output(component_id='artwork-image', component_property='src')
+    ],
+    Input(component_id='artwork-selector', component_property='value')
+)
+def on_artwork_selection(artwork):
+    if artwork is None:
+        return 'None', go.Figure(data=[], layout=pie_fig_layout), ''
+    
+    query = select(database.Colors, database.Artwork).where(database.Artwork.id == artwork)
+    df = pd.read_sql_query(sql=query, con=db.engine.connect())
+    # artwork_color = select(database.Colors).join(database.Artwork).where(database.Artwork.id == artwork)
+    # df_colors = pd.read_sql_query(sql=artwork_color, con=db.engine.connect())
+    rgb_colors, cluster_counts = df.rgb_colors.iloc[0], df.cluster_counts.iloc[0]
+    url = df.url.iloc[0]
+    p_text = df.summary.iloc[0]
+    
+    fig_pie = homepage_data.generate_piechart(rgb_colors, cluster_counts)
+
+# temp link 
+    return p_text, fig_pie, url

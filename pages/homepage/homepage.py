@@ -36,10 +36,10 @@ div_container_style = {'padding': (padding_px * 4).rstrip()}
 
 
 # * Functions #################################################################################################################
-def generate_card(title, text, border_color):
-    card = dbc.Card(dbc.CardBody([
+def generate_card(p_id, title, text, border_color):
+    card = dbc.Card(children=dbc.CardBody([
                 html.Center(html.H3(title)),
-                html.P(text),
+                html.P(id=p_id, children=[text]),
             ]), color=border_color, outline=True)
     return card
 
@@ -93,14 +93,15 @@ homepage_layout = html.Div(children=[
             
             generate_div_container(div_id='left-card-container',
                                    div_children=[
-                                       generate_card(title='Picture information',
+                                       generate_card(p_id='picture-info-p',
+                                                     title='Picture information',
                                                      text=''' Artist: Vincent Van Gogh, birthplace: The Netherlands, date: 1889,  
                                                               medium: oil on canvas, dimensions: 73 x 92 cm ''',
                                                      border_color='secondary')],
                                    div_style=div_container_style)
             
             
-        ], style=div_style('20%'), className='aligned-divs'),
+        ], style=div_style('15%'), className='aligned-divs'),
         html.Div(id='row-2-center', children=[
             generate_div_container(div_id='timeline-container',
                                    div_children=[dcc.Graph(id='timeline', figure=fig_timeline, config={'displayModeBar': True})],
@@ -108,20 +109,22 @@ homepage_layout = html.Div(children=[
             
             generate_div_container(div_id='center-card-container',
                                    div_children=[
-                                       generate_card(title='Timeline information',
+                                       generate_card(p_id='timeline-info-p',
+                                                     title='Timeline information',
                                                      text=''' jean leon gerome, Alma playing chess, academicism, 19th century, france ''',
                                                      border_color='secondary')],
                                    div_style=div_container_style),
             
             generate_div_container(div_id='color-card-container',
                                    div_children=[
-                                       generate_card(title='Color characteristics',
+                                       generate_card(p_id='color-info-p',
+                                                     title='Color characteristics',
                                                      text=''' Dominant color: #a9d4cb, Movements with similar color themes: Cubism, Impressionism,
                                                               Artists with similar color themes: Pablo Picasso, Vincent Van Gogh ''',
                                                      border_color='secondary')],
                                    div_style=div_container_style)
             
-        ], style=div_style('55%'), className='aligned-divs'),
+        ], style=div_style('60%'), className='aligned-divs'),
         html.Div(id='row-2-right', children=[
             generate_div_container(div_id='color-information-container-super',
                                    div_children=[dcc.Graph(id='color-pie-chart-super', figure=go.Figure(data=[], layout=fig_layout))],
