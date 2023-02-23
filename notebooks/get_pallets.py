@@ -26,7 +26,7 @@ dataset_dir='./data/'
 
 
 # Number of colors to be extracted
-NUM_COLORS = 10
+NUM_COLORS = 30
 Artwork = pd.read_csv(dataset_dir+'Artwork.csv')
 
 
@@ -60,29 +60,32 @@ def get_img_pallete(ids_and_urls):
 
     return {
         'id':img_id,
-        'cluster_labels':cluster_labels,
+        'cluster_counts':cluster_counts,
         'rgb_colors':rgb_colors
     }
+
+def save(dict, dir):
+    df = pd.DataFrame(dict)
+    df.cluster_counts = df.cluster_counts.astype(str).str.lstrip('Counter(').str.rstrip(')')
+    df.rgb_colors = df.rgb_colors.apply(lambda x: str([list(a) for a in x]))[0]
+    df.to_csv(dir)
 
 result = []
 test_bar = tqdm(total=len(Artwork['id']))
 i=1
-with Pool(processes=2, initializer=i1) as pool:
-    iterator = pool.imap(get_img_pallete, list(Artwork[['id','image_url']].itertuples(index=False, name=None)))
-    while True:
-        if len(result)==1000:
-            with open('/media/stratos/New Volume/'+'img_pallets_'+str(i)+'.pkl', 'wb') as handle:
-                pickle.dump(result, handle)
-                result = []
-                i+=1
-        test_bar.update()
-        try:
-            result.append(next(iterator))
-        except StopIteration:
-            break
-        except Exception as e:
-            print('Error at iteration', len(result))
-            print(e)
+# with Pool(processes=1, initializer=i1) as pool:
+for ids_and_urls in list(Artwork[['id','image_url']].itertuples(index=False, name=None)):
+    if len(result)==1000:
+        save(result,'/media/stratos/New Volume/'+'img_pallets_'+str(i)+'_2.csv')
+        result = []
+        i+=1
+    test_bar.update()
+    try:
+        result.append(get_img_pallete(ids_and_urls))
+    except StopIteration:
+        break
+    except Exception as e:
+        print('Error at iteration', len(result))
+        print(e)
 
-with open('/media/stratos/New Volume/'+'img_pallets_last.pkl', 'wb') as handle:
-    pickle.dump(result, handle)
+save(result,'/media/stratos/New Volume/img_pallets_last_2.csv')
