@@ -11,120 +11,24 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.JOURNAL])
 server = app.server
 app.title='First test app on AWS'
 
-# ! Test values
-labels = ['#a9d4cb', '#8d7d43', '#080602', '#eae0b8', '#473a1b', '#6d9b97', '#ccba86', '#6c5e31', '#86bdb9', '#ac9a5e']
-values = [47745, 51759, 12770, 20736, 29278, 17374, 25540, 48025, 65659, 36854]
+import os
 
-# *** Constants ###############################################################################################################
-pie = go.Pie(labels=labels, values=values, hole=.2, marker=dict(colors=labels))
-fig_layout = {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)', 
-              'xaxis': {'showgrid': False, 'visible': False},
-              'yaxis': {'showgrid': False, 'visible': False}}
+test = 'False'
+if 'RDS_HOSTNAME' in os.environ:
+    test = 'True'
+    DATABASES = {
+        'NAME': os.environ['RDS_DB_NAME'],
+        'USER': os.environ['RDS_USERNAME'],
+        'PASSWORD': os.environ['RDS_PASSWORD'],
+        'HOST': os.environ['RDS_HOSTNAME'],
+        'PORT': os.environ['RDS_PORT'],
+    }   
 
-img_link = 'https://kuleuven-datathon-2023.s3.eu-central-1.amazonaws.com/images/Jean-L%C3%A9on+G%C3%A9r%C3%B4me/Almehs+playing+Chess+in+a+Caf%C3%A9.jpg'
-div_style = lambda x: {'width': x, 'vertical-align': 'top', 'display': 'inline-block'}
-
-padding_px = '5px '
-div_container_style = {'padding': (padding_px * 4).rstrip()}
-# *** #########################################################################################################################
-
-
-# * Functions #################################################################################################################
-def generate_card(title, text, border_color):
-    card = dbc.Card(dbc.CardBody([
-                html.Center(html.H3(title)),
-                html.P(text),
-            ]), color=border_color, outline=True)
-    return card
-
-def generate_div_container(div_id, div_children, div_style):
-    return html.Div(id=div_id, children=div_children, style=div_style)
-
-# * ###########################################################################################################################
-
-# * Layout ####################################################################################################################
 layout = html.Div(children=[
-    # ! ROW 1
-    html.Div(id='row-1', children=[
-        html.Div(id='row-1-left', children=[
-            html.Center(html.H3('Selections'))
-        ], style=div_style('20%'), className='aligned-divs'),
-        html.Div(id='row-1-center', children=[
-            html.Center(html.H3('Timeline'))
-        ], style=div_style('55%'), className='aligned-divs'),
-        html.Div(id='row-1-right', children=[
-            html.Center(html.H3('Color information'))
-        ], style=div_style('25%'), className='aligned-divs')
-    ]),
-    # ! ROW 2
-    html.Div(id='row-2', children=[
-        html.Div(id='row-2-left', children=[
-            generate_div_container(div_id='dropdown-1-container',
-                                   div_children=[dcc.Dropdown(id='category-selector', options=['Artist', 'Movement', 'Century', 'Country', 'Date Range'],
-                                                              placeholder='Select a category')],
-                                   div_style=div_container_style),
-            
-            generate_div_container(div_id='dropdown-2-container',
-                                   div_children=[dcc.Dropdown(id='subcategory-selector', options=[], placeholder='Select a subcategory')],
-                                   div_style=div_container_style),
-            
-            generate_div_container(div_id='dropdown-3-container',
-                                   div_children=[dcc.DatePickerRange(id='date-picker', start_date_placeholder_text='Start date',
-                                                                     end_date_placeholder_text='End date')],
-                                   div_style=div_container_style),
-            
-            generate_div_container(div_id='image-container',
-                                   div_children=[html.Center(html.Img(id='artwork-image', height='100%', width='100%', src=img_link))],
-                                   div_style=div_container_style),
-            
-        ], style=div_style('20%'), className='aligned-divs'),
-        html.Div(id='row-2-center', children=[
-            generate_div_container(div_id='timeline-container',
-                                   div_children=[dcc.Graph(id='timeline', figure=go.Figure(), config={'displayModeBar': True})],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('55%'), className='aligned-divs'),
-        html.Div(id='row-2-right', children=[
-            generate_div_container(div_id='color-information-container',
-                                   div_children=[dcc.Graph(id='color-pie-chart', figure=go.Figure(data=[pie], layout=fig_layout))],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('25%'), className='aligned-divs'),
-    ]),
-    # ! ROW 3
-    html.Div(id='row-3', children=[
-        html.Div(id='row-3-left', children=[
-            generate_div_container(div_id='left-card-container',
-                                   div_children=[
-                                       generate_card(title='Picture information',
-                                                     text=''' Artist: Vincent Van Gogh, birthplace: The Netherlands, date: 1889,  
-                                                              medium: oil on canvas, dimensions: 73 x 92 cm ''',
-                                                     border_color='secondary')],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('20%'), className='aligned-divs'),
-        html.Div(id='row-3-center', children=[
-            generate_div_container(div_id='center-card-container',
-                                   div_children=[
-                                       generate_card(title='Timeline information',
-                                                     text=''' jean leon gerome, Alma playing chess, academicism, 19th century, france ''',
-                                                     border_color='secondary')],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('55%'), className='aligned-divs'),
-        html.Div(id='row-3-right', children=[
-            generate_div_container(div_id='right-card-container',
-                                   div_children=[
-                                       generate_card(title='Color characteristics',
-                                                     text=''' Dominant color: #a9d4cb, Movements with similar color themes: Cubism, Impressionism,
-                                                              Artists with similar color themes: Pablo Picasso, Vincent Van Gogh ''',
-                                                     border_color='secondary')],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('25%'), className='aligned-divs')
+    html.Div(children=[
+        html.H2(test), 
     ])
 ])
-# * Layout ####################################################################################################################
 
 app.layout = layout
 

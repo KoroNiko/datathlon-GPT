@@ -37,3 +37,32 @@ ast.literal_eval(str_as_dict)
 virtualenv with python 3.8 to match AWS instance env
 callbacks for dashboard
 prepare data
+https://aws.amazon.com/getting-started/hands-on/create-mysql-db/
+
+
+### DB credentials
+
+username : gpt_admin
+pass: HN9gLBmeR3JiXS9
+
+
+instance_id: gpt-aws-datathlon
+key_pair_name: datathlon_keypair
+username: gptadmin
+pass: G6UUQWnZ4hQXasJ
+dbname: main
+
+### aws db info 
+
+ebdb
+gptadmin
+G6UUQWnZ4hQXasJ
+awseb-e-xmnhm5wd57-stack-awsebrdsdatabase-crgs3u6pwu5r.c8s8i66l2ado.us-east-1.rds.amazonaws.com
+3306
+
+
+
+name: last_database_gpt
+user: admin
+pass: XNQD6TkkB665b9p
+dbname: main

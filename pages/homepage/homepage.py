@@ -22,6 +22,11 @@ fig_layout = {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0
               'xaxis': {'showgrid': False, 'visible': False},
               'yaxis': {'showgrid': False, 'visible': False}}
 
+fig_timeline = go.Figure()
+fig_timeline.update_xaxes(type='date', showgrid=False)
+fig_timeline.update_yaxes(visible=False, showgrid=False)
+
+
 img_link = 'https://kuleuven-datathon-2023.s3.eu-central-1.amazonaws.com/images/Jean-L%C3%A9on+G%C3%A9r%C3%B4me/Almehs+playing+Chess+in+a+Caf%C3%A9.jpg'
 div_style = lambda x: {'width': x, 'vertical-align': 'top', 'display': 'inline-block'}
 
@@ -74,34 +79,18 @@ homepage_layout = html.Div(children=[
                                    div_children=[dcc.Dropdown(id='artwork-selector', options=[], placeholder='Select an artwork',
                                                               disabled=True)],
                                    div_style=div_container_style),
-            
+                        
             # ? Date picker will not be used (probably)
             # generate_div_container(div_id='dropdown-3-container',
             #                        div_children=[dcc.DatePickerRange(id='date-picker', start_date_placeholder_text='Start date',
             #                                                          end_date_placeholder_text='End date')],
             #                        div_style=div_container_style),
             
+            
             generate_div_container(div_id='image-container',
                                    div_children=[html.Center(html.Img(id='artwork-image', height='100%', width='100%', src=img_link))],
                                    div_style=div_container_style),
             
-        ], style=div_style('20%'), className='aligned-divs'),
-        html.Div(id='row-2-center', children=[
-            generate_div_container(div_id='timeline-container',
-                                   div_children=[dcc.Graph(id='timeline', figure=go.Figure(), config={'displayModeBar': True})],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('55%'), className='aligned-divs'),
-        html.Div(id='row-2-right', children=[
-            generate_div_container(div_id='color-information-container',
-                                   div_children=[dcc.Graph(id='color-pie-chart', figure=go.Figure(data=[pie], layout=fig_layout))],
-                                   div_style=div_container_style)
-            
-        ], style=div_style('25%'), className='aligned-divs'),
-    ]),
-    # ! ROW 3
-    html.Div(id='row-3', children=[
-        html.Div(id='row-3-left', children=[
             generate_div_container(div_id='left-card-container',
                                    div_children=[
                                        generate_card(title='Picture information',
@@ -110,24 +99,69 @@ homepage_layout = html.Div(children=[
                                                      border_color='secondary')],
                                    div_style=div_container_style)
             
+            
         ], style=div_style('20%'), className='aligned-divs'),
-        html.Div(id='row-3-center', children=[
+        html.Div(id='row-2-center', children=[
+            generate_div_container(div_id='timeline-container',
+                                   div_children=[dcc.Graph(id='timeline', figure=fig_timeline, config={'displayModeBar': True})],
+                                   div_style=div_container_style),
+            
             generate_div_container(div_id='center-card-container',
                                    div_children=[
                                        generate_card(title='Timeline information',
                                                      text=''' jean leon gerome, Alma playing chess, academicism, 19th century, france ''',
                                                      border_color='secondary')],
-                                   div_style=div_container_style)
+                                   div_style=div_container_style),
             
-        ], style=div_style('55%'), className='aligned-divs'),
-        html.Div(id='row-3-right', children=[
-            generate_div_container(div_id='right-card-container',
+            generate_div_container(div_id='color-card-container',
                                    div_children=[
                                        generate_card(title='Color characteristics',
                                                      text=''' Dominant color: #a9d4cb, Movements with similar color themes: Cubism, Impressionism,
                                                               Artists with similar color themes: Pablo Picasso, Vincent Van Gogh ''',
                                                      border_color='secondary')],
                                    div_style=div_container_style)
+            
+        ], style=div_style('55%'), className='aligned-divs'),
+        html.Div(id='row-2-right', children=[
+            generate_div_container(div_id='color-information-container-super',
+                                   div_children=[dcc.Graph(id='color-pie-chart-super', figure=go.Figure(data=[], layout=fig_layout))],
+                                   div_style=div_container_style),
+            
+            generate_div_container(div_id='color-information-container',
+                                   div_children=[dcc.Graph(id='color-pie-chart', figure=go.Figure(data=[], layout=fig_layout))],
+                                   div_style=div_container_style)
+            
+        ], style=div_style('25%'), className='aligned-divs'),
+    ]),
+    # ! ROW 3
+    html.Div(id='row-3', children=[
+        html.Div(id='row-3-left', children=[
+        #     generate_div_container(div_id='left-card-container',
+        #                            div_children=[
+        #                                generate_card(title='Picture information',
+        #                                              text=''' Artist: Vincent Van Gogh, birthplace: The Netherlands, date: 1889,  
+        #                                                       medium: oil on canvas, dimensions: 73 x 92 cm ''',
+        #                                              border_color='secondary')],
+        #                            div_style=div_container_style)
+            
+        ], style=div_style('20%'), className='aligned-divs'),
+        html.Div(id='row-3-center', children=[
+        #     generate_div_container(div_id='center-card-container',
+        #                            div_children=[
+        #                                generate_card(title='Timeline information',
+        #                                              text=''' jean leon gerome, Alma playing chess, academicism, 19th century, france ''',
+        #                                              border_color='secondary')],
+        #                            div_style=div_container_style)
+        # 
+        ], style=div_style('55%'), className='aligned-divs'),
+        html.Div(id='row-3-right', children=[
+            # generate_div_container(div_id='right-card-container',
+            #                        div_children=[
+            #                            generate_card(title='Color characteristics',
+            #                                          text=''' Dominant color: #a9d4cb, Movements with similar color themes: Cubism, Impressionism,
+            #                                                   Artists with similar color themes: Pablo Picasso, Vincent Van Gogh ''',
+            #                                          border_color='secondary')],
+            #                        div_style=div_container_style)
             
         ], style=div_style('25%'), className='aligned-divs')
     ])
