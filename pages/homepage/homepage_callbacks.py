@@ -47,13 +47,16 @@ def on_category_selection(category):
         Output(component_id='artwork-selector', component_property='disabled'),
         Output(component_id='color-pie-chart-super', component_property='figure'),
         Output(component_id='timeline', component_property='figure'),
+        Output(component_id='timeline-info-p', component_property='children'),
+        Output(component_id='color-info-p', component_property='children')
     ],
     Input(component_id='subcategory-selector', component_property='value'),
     State(component_id='category-selector', component_property='value')
 )
 def on_subcategory_selection(subcategory, category):
     if subcategory is None:
-        return [], True, go.Figure(data=[], layout=pie_fig_layout), go.Figure(data=[], layout=t_fig_layout)
+        return [], True, go.Figure(data=[], layout=pie_fig_layout), go.Figure(data=[], layout=t_fig_layout),\
+            '', ''
     pass
         
     # ? Pie chart for supercluster
@@ -83,20 +86,30 @@ def on_subcategory_selection(subcategory, category):
     df_subcat = pd.read_sql_query(sql=select(database.Subcategory).where(database.Subcategory.id == subcategory), con=db.engine.connect())
     fig_timeline = homepage_data.generate_timeline_figure(df_subcat)
       
-    return artwork_options, False, fig_pie, fig_timeline
+    # ? Timeline info paragraph text
+    info_text = df_subcat.caption.iloc[0]
+    
+    # ? Color info text:
+    color_text = homepage_data.get_color_information(rgb_colors, cluster_counts, title_str='Subcategory Colors')
+      
+    return artwork_options, False, fig_pie, fig_timeline, info_text, color_text
 
 
 @app.callback(
     [
         Output(component_id='picture-info-p', component_property='children'),
         Output(component_id='color-pie-chart', component_property='figure'),
-        Output(component_id='artwork-image', component_property='src')
+        Output(component_id='artwork-image', component_property='src'),
+        # Output(component_id='color-info-p', component_property='children')
     ],
-    Input(component_id='artwork-selector', component_property='value')
+    Input(component_id='artwork-selector', component_property='value'),
+    State(component_id='color-info-p', component_property='children')
 )
-def on_artwork_selection(artwork):
+def on_artwork_selection(artwork, color_info):
     if artwork is None:
         return 'None', go.Figure(data=[], layout=pie_fig_layout), ''
+    
+    print(color_info)
     
     query = select(database.Colors, database.Artwork).where(database.Artwork.id == artwork)
     df = pd.read_sql_query(sql=query, con=db.engine.connect())
@@ -107,6 +120,9 @@ def on_artwork_selection(artwork):
     p_text = df.summary.iloc[0]
     
     fig_pie = homepage_data.generate_piechart(rgb_colors, cluster_counts)
+    
+    # ? Artwork color info text
+    # color_text = homepage_data.get_color_information(rgb_colors, cluster_counts, title_str='Artwork Colors')
+    # color_info.extend(color_text)
 
-# temp link 
     return p_text, fig_pie, url

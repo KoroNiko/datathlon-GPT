@@ -27,7 +27,8 @@ fig_timeline.update_xaxes(type='date', showgrid=False)
 fig_timeline.update_yaxes(visible=False, showgrid=False)
 
 
-img_link = 'https://kuleuven-datathon-2023.s3.eu-central-1.amazonaws.com/images/Jean-L%C3%A9on+G%C3%A9r%C3%B4me/Almehs+playing+Chess+in+a+Caf%C3%A9.jpg'
+# img_link = 'https://kuleuven-datathon-2023.s3.eu-central-1.amazonaws.com/images/Jean-L%C3%A9on+G%C3%A9r%C3%B4me/Almehs+playing+Chess+in+a+Caf%C3%A9.jpg'
+img_link = 'assets/image_placeholder.jpg'
 div_style = lambda x: {'width': x, 'vertical-align': 'top', 'display': 'inline-block'}
 
 padding_px = '5px '
@@ -54,10 +55,10 @@ homepage_layout = html.Div(children=[
     html.Div(id='row-1', children=[
         html.Div(id='row-1-left', children=[
             html.Center(html.H3('Selections'))
-        ], style=div_style('20%'), className='aligned-divs'),
+        ], style=div_style('15%'), className='aligned-divs'),
         html.Div(id='row-1-center', children=[
             html.Center(html.H3('Timeline'))
-        ], style=div_style('55%'), className='aligned-divs'),
+        ], style=div_style('60%'), className='aligned-divs'),
         html.Div(id='row-1-right', children=[
             html.Center(html.H3('Color information'))
         ], style=div_style('25%'), className='aligned-divs')

@@ -9,7 +9,7 @@ from sqlalchemy.sql import Select
 from app import datathlonDB, db, server
 from utils import database
 from utils import functions
-
+from dash import html
 # ! datetime libs import if needed
 
 database_dir = config['DATABASE_DIR']
@@ -82,3 +82,22 @@ def generate_timeline_figure(df):
     # print(timeline_range)
     
     return fig
+
+
+def get_color_information(rgb_colors, cluster_counts, title_str):
+    cluster_counts_dict = ast.literal_eval(cluster_counts)
+    rgb_colors_list = ast.literal_eval(rgb_colors)
+    
+    labels = functions.rgb2hex(rgb_colors_list)
+    values = list(map(lambda x: x[1], sorted(rgb_colors_list)))
+    
+    
+    dominant_color_rgb_i = list(cluster_counts_dict)[0]
+    dominant_color_hex = '#%02x%02x%02x' % tuple(rgb_colors_list[dominant_color_rgb_i])
+    dominant_color_rgb = rgb_colors_list[dominant_color_rgb_i]
+
+    color_info  =[html.B(title_str), html.Br(), 
+                  f'''Dominant color in RGB: {dominant_color_rgb}''', html.Br(), 
+                  f'''Dominant color in Hex: {dominant_color_hex}''', html.Br()]
+    
+    return color_info
